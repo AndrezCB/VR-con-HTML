@@ -7,7 +7,12 @@
   </head>
   <body>
     <a-scene>
+      <!-- Cámara -->
+      <a-entity camera position="0 1.6 3" look-controls></a-entity>
 
+      <!-- Luz -->
+      <a-entity light="type: directional; intensity: 1" position="2 4 2"></a-entity>
+      
       <!-- Importar modelo 3D -->
       <a-entity gltf-model="url(planta1.glb)" position="0 0 0" scale="1 1 1"></a-entity>
 
@@ -16,5 +21,6 @@
   </body>
 
 </html>
+
 
 
