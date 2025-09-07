@@ -14,7 +14,10 @@
       <a-entity light="type: directional; intensity: 1" position="2 4 2"></a-entity>
       
       <!-- Importar modelo 3D -->
-      <a-entity gltf-model="url(planta1.glb)" position="0 0 0" scale="2 2 2"></a-entity>
+      <a-entity gltf-model="url(ensamblado.glb)" 
+            position="0 0 0" 
+            scale="2 2 2"
+            animation-mixer>
 
       <!-- Piso para referencia -->
       <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
@@ -23,6 +26,7 @@
   </body>
 
 </html>
+
 
 
 
