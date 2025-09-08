@@ -1,37 +1,68 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Celda de Manufactura</title>
+    <meta charset="utf-8" />
+    <title>Celda de Manufactura - Animaciones</title>
+
+    <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+    <!-- Componente animation-mixer (donmccurdy) -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+
+    <style> body { margin: 0; } </style>
   </head>
+
   <body>
-    <a-scene>
+    <a-scene background="color: #888">
+
       <!-- Cámara -->
-      <a-entity camera position="0 1.6 3" look-controls></a-entity>
+      <a-entity camera position="0 1.6 4" look-controls></a-entity>
 
-      <!-- Luz -->
+      <!-- Iluminación -->
+      <a-entity light="type: ambient; intensity: 0.6"></a-entity>
       <a-entity light="type: directional; intensity: 1" position="2 4 2"></a-entity>
-      
-      <!-- Importar modelo 3D -->
-      <a-entity gltf-model="url(ensamblado.glb)" 
-            position="0 2 0" 
-            scale="1 1 1"
-            animation-mixer="clip: Simulación_proceso_industrial">
 
-      
-      
+      <!-- Tu modelo: ojo, el a-entity está correctamente cerrado -->
+      <a-entity id="miModelo"
+                gltf-model="url(ensamblado.glb)"
+                position="0 0 -2"
+                scale="1 1 1"
+                animation-mixer="clip: Simulación_proceso_industrial; loop: repeat">
+      </a-entity>
+
+      <!-- Piso -->
+      <a-plane rotation="-90 0 0" width="20" height="20" color="#7BC8A4"></a-plane>
+
+      <script>
+        const el = document.querySelector('#miModelo');
+
+        // Cuando el modelo esté cargado, lista los clips disponibles en consola
+        el.addEventListener('model-loaded', (ev) => {
+          // el.getObject3D('mesh') puede contener el gltf y sus animations
+          const model = el.getObject3D('mesh');
+          if (!model) { console.warn('No se encontró mesh en el elemento'); return; }
+
+          // Las animaciones (clips) suelen estar en model.animations o model.scene.animations
+          const animations = (model.animations || (model.scene && model.scene.animations)) || [];
+          console.log('Clips disponibles:', animations.map(a => a.name));
+
+          // Si el nombre del clip contiene espacios o caracteres especiales, fíjate aquí cómo aparece
+          // Si quieres forzar reproducir el primer clip y hacer loop:
+          if (animations.length > 0) {
+            // usa el componente animation-mixer de A-Frame para reproducir
+            el.setAttribute('animation-mixer', `clip: ${animations[0].name}; loop: repeat`);
+            console.log('Forzando reproducción del clip:', animations[0].name);
+          } else {
+            console.warn('No se detectaron animaciones en el glb. Revisa que SolidWorks exportó Motion Study.');
+          }
+        });
+
+        el.addEventListener('model-error', (e) => {
+          console.error('Error cargando el modelo:', e);
+        });
+      </script>
+
     </a-scene>
   </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
